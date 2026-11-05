@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Budgit – 簡單好用的記帳 App</title>
+<style>
+:root{--bg:#f6f8f5;--card:#fff;--text:#14221a;--muted:#5d6b63;--brand:#1faa6b;--brand2:#0d7a4c;--line:#e3e9e4;--soft:#e6f6ee;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1511;--card:#17211b;--text:#eaf3ed;--muted:#97a79d;--line:#243029;--soft:#16301f;--brand:#34d08a;--brand2:#1faa6b}}
+:root[data-theme="dark"]{--bg:#0e1511;--card:#17211b;--text:#eaf3ed;--muted:#97a79d;--line:#243029;--soft:#16301f;--brand:#34d08a;--brand2:#1faa6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:32px 0 24px}
+.logo{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:#fff;font-size:38px;font-weight:800;box-shadow:0 8px 24px rgba(31,170,107,.35)}
+h1{font-size:2.4rem;margin:16px 0 4px;line-height:1.2}
+.sub{color:var(--muted);font-size:1.1rem;margin:0 0 20px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{background:var(--soft);color:var(--brand2);padding:4px 12px;border-radius:99px;font-size:.85rem;font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip{color:var(--brand)}}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff;border:0;font-size:1.1rem;font-weight:700;padding:14px 28px;border-radius:14px;cursor:pointer;text-decoration:none;box-shadow:0 6px 18px rgba(31,170,107,.35)}
+.btn:active{transform:scale(.98)}
+.note{color:var(--muted);font-size:.85rem;margin-top:10px}
+.phone{width:240px;margin:0 auto;border-radius:34px;border:8px solid #1c2620;background:var(--card);padding:18px 14px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.ph-h{font-size:.75rem;color:var(--muted)}
+.ph-b{font-size:1.7rem;font-weight:800;margin:2px 0 12px}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin:4px 0 12px}
+.bar i{display:block;height:100%;background:var(--brand);border-radius:6px}
+.row{display:flex;justify-content:space-between;font-size:.8rem;padding:8px 0;border-top:1px solid var(--line)}
+.row b.neg{color:#e5484d}
+h2{font-size:1.4rem;margin:36px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card .ic{font-size:1.6rem}
+.card h3{margin:6px 0 4px;font-size:1.05rem}
+.card p{margin:0;color:var(--muted);font-size:.92rem}
+ol{padding-left:0;list-style:none;counter-reset:s;display:grid;gap:12px;margin:0}
+ol li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px 14px 56px;position:relative}
+ol li::before{content:counter(s);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:32px 0 16px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#14221a;color:#fff;padding:10px 18px;border-radius:12px;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s}
+.toast.show{opacity:1}
+@media(max-width:720px){.hero{grid-template-columns:1fr;text-align:center}.logo{margin:0 auto}.meta{justify-content:center}h1{font-size:2rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <div class="logo">B</div>
+      <h1>Budgit</h1>
+      <p class="sub">把每一筆開銷記清楚，讓預算輕鬆掌握。</p>
+      <div class="meta">
+        <span class="chip">Android</span>
+        <span class="chip">APK 約 1.2 MB</span>
+        <span class="chip">輕量・免註冊</span>
+      </div>
+      <button class="btn" id="dl">⬇ 下載 APK</button>
+      <p class="note">需要 Android 手機；安裝時請允許「安裝未知來源應用程式」。</p>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="ph-h">本月剩餘預算</div>
+      <div class="ph-b">$8,450</div>
+      <div class="bar"><i style="width:62%"></i></div>
+      <div class="row"><span>🍜 餐飲</span><b class="neg">-$320</b></div>
+      <div class="row"><span>🚌 交通</span><b class="neg">-$85</b></div>
+      <div class="row"><span>💼 薪資</span><b>+$42,000</b></div>
+    </div>
+  </section>
+
+  <h2>功能亮點</h2>
+  <div class="grid">
+    <div class="card"><div class="ic">⚡</div><h3>快速記帳</h3><p>幾秒完成一筆收支，不打斷你的日常。</p></div>
+    <div class="card"><div class="ic">🎯</div><h3>預算追蹤</h3><p>設定每月預算，隨時看到還剩多少。</p></div>
+    <div class="card"><div class="ic">📊</div><h3>清楚統計</h3><p>依類別檢視花費，找出錢花去哪了。</p></div>
+    <div class="card"><div class="ic">🪶</div><h3>輕巧不佔空間</h3><p>安裝檔僅約 1.2 MB，啟動快速。</p></div>
+  </div>
+
+  <h2>安裝教學</h2>
+  <ol>
+    <li>點上方「下載 APK」，等待檔案下載完成。</li>
+    <li>點開下載的檔案，若出現提示，前往設定允許瀏覽器「安裝未知來源應用程式」。</li>
+    <li>回到安裝畫面，點「安裝」，完成後即可開啟 Budgit。</li>
+  </ol>
+
+  <footer>© 2026 Budgit · 僅提供 Android 安裝檔，請從本頁面下載以確保安全。</footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// 把 APK 的直接下載網址貼在這裡（例如 GitHub Releases 的連結）
+var APK_URL = "https://raw.githubusercontent.com/ray111079-sys/jubilant-pancake/main/gRCuChzuxBOrrFRp.apk";
+document.getElementById("dl").addEventListener("click", function () {
+  if (APK_URL) { window.location.href = APK_URL; return; }
+  var t = document.getElementById("toast");
+  t.textContent = "下載網址尚未設定";
+  t.classList.add("show");
+  setTimeout(function () { t.classList.remove("show"); }, 2200);
+});
+</script>
+</body>
+</html>
